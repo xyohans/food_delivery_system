@@ -1,0 +1,216 @@
+
+
+---
+
+## Tables you already use
+```
+users        → register, login
+menu_items   → customer browsing the menu
+```
+
+---
+
+## The rest — when you use them and what feature triggers them:
+
+---
+
+### `addresses`
+**When:** Customer goes to their profile and adds a delivery address, OR when they are about to place an order and need to pick where to deliver.
+
+**What you build:**
+- A form where the customer types their address and gives it a label (Home, Work)
+- When they submit → `INSERT INTO addresses`
+- When they open the order page → `SELECT FROM addresses WHERE user_id = ?` to show their saved addresses as a dropdown
+
+```
+Feature: "Manage my addresses"
+Model  → Address.java
+DAO    → AddressDAO.java  (save, getByCustomer, delete)
+Servlet→ AddressServlet.java
+JSP    → addresses.jsp
+```
+
+---
+
+### `menu_categories`
+**When:** You already fetch menu items — you should also fetch categories to group the menu by section on the page.
+
+**What you build:** Nothing new really. Your `MenuDAO.getAvailableItems()` already joins with categories. You just use `categoryName` in the JSP to group items under headers like "Burgers", "Pizza", "Drinks".
+
+```
+No new servlet needed — already part of the menu feature
+Just use categoryName in your menu.jsp to group the display
+```
+
+---
+
+### `orders`
+**When:** Customer confirms their cart and clicks "Place Order".
+
+This is the biggest feature — it touches `orders`, `order_items`, and `payments` all at once in one transaction.
+
+**What you build:**
+```
+Feature: "Place an order"
+Model  → Order.java
+DAO    → OrderDAO.java  (placeOrder, getOrdersByCustomer)
+Servlet→ PlaceOrderServlet.java
+JSP    → cart.jsp, myorders.jsp
+```
+
+After placing, the order shows up in:
+- Customer's "My Orders" page → `SELECT FROM orders WHERE customer_id = ?`
+- Admin's dashboard → `SELECT FROM orders WHERE status = 'paid'`
+
+---
+
+### `order_items`
+**When:** Created automatically the moment an order is placed — same transaction as inserting into `orders`.
+
+You never insert into `order_items` alone. It always happens together with `orders` inside `OrderDAO.placeOrder()`. You already have this code written.
+
+**When you READ it:** When anyone wants to see what's inside an order:
+```sql
+SELECT oi.quantity, oi.unit_price, m.name
+FROM order_items oi
+JOIN menu_items m ON oi.item_id = m.id
+WHERE oi.order_id = ?
+```
+
+```
+No separate servlet — part of the order detail page
+Add getOrderItems(int orderId) method to OrderDAO
+```
+
+---
+
+### `payments`
+**When:** Right after the order is inserted — still part of the same "Place Order" flow. Customer picks payment method (card, cash, wallet) and a payment row is created.
+
+**Special case — wallet payment:**
+```java
+// Inside your placeOrder transaction, if method = "wallet":
+UPDATE users SET balance = balance - ? WHERE id = ? AND balance >= ?
+// Check balance is enough before deducting
+```
+
+**Special case — cash payment:**
+```
+Payment row created with status = "pending"
+When delivery guy marks delivered → UPDATE payments SET status = "completed"
+```
+
+```
+Feature: "Pay for order"
+Model  → Payment.java
+DAO    → PaymentDAO.java  (createPayment, completePayment)
+Servlet→ PaymentServlet.java
+JSP    → payment.jsp
+```
+
+---
+
+### `cancellations`
+**When:** Customer clicks "Cancel Order" — only allowed if status is `pending` or `paid`.
+
+**What you build:**
+```java
+// In CancellationDAO:
+// 1. Check order status first
+// 2. If pending or paid → INSERT into cancellations + UPDATE orders SET status='cancelled'
+// 3. If status is preparing/ready/delivering → block it, show error
+```
+
+```
+Feature: "Cancel my order"
+Model  → Cancellation.java
+DAO    → CancellationDAO.java  (cancel, isCancellable)
+Servlet→ CancelOrderServlet.java
+```
+
+---
+
+### `notifications`
+**When:** You never show the user a form to create notifications — they are created automatically by your backend every time something important happens.
+
+Here is every moment you INSERT a notification:
+
+```java
+// 1. Customer places order → notify admin
+INSERT INTO notifications (user_id, order_id, message)
+VALUES (adminId, orderId, "New order #X received")
+
+// 2. Admin assigns chef → notify chef
+INSERT INTO notifications (user_id, order_id, message)
+VALUES (chefId, orderId, "You have a new order to prepare")
+
+// 3. Chef marks ready → notify admin
+INSERT INTO notifications (user_id, order_id, message)
+VALUES (adminId, orderId, "Order #X is ready for pickup")
+
+// 4. Admin assigns delivery → notify delivery guy
+INSERT INTO notifications (user_id, order_id, message)
+VALUES (deliveryId, orderId, "You have a delivery to make")
+
+// 5. Delivery guy delivers → notify customer
+INSERT INTO notifications (user_id, order_id, message)
+VALUES (customerId, orderId, "Your order has been delivered")
+```
+
+**What you build:**
+```
+Feature: "Notification bell"
+Model  → Notification.java
+DAO    → NotificationDAO.java (insert, getUnread, markRead)
+Servlet→ NotificationServlet.java  (returns unread notifications as JSON)
+JSP    → a bell icon in the header that shows unread count
+```
+
+---
+
+## The full picture — what triggers what:
+
+```
+User registers / logs in
+└── users table
+
+Customer browses menu
+└── menu_items + menu_categories
+
+Customer saves address
+└── addresses table
+
+Customer places order ← biggest feature
+├── orders table (create the ticket)
+├── order_items table (what's in the ticket)
+├── payments table (how they pay)
+└── notifications table (tell the admin)
+
+Admin assigns chef
+├── orders table (update chef_id + status)
+├── users table (set chef is_free = 0)
+└── notifications table (tell the chef)
+
+Chef marks ready
+├── orders table (update status to ready)
+├── users table (set chef is_free = 1)
+└── notifications table (tell the admin)
+
+Admin assigns delivery
+├── orders table (update delivery_id + status)
+├── users table (set delivery is_free = 0)
+└── notifications table (tell the delivery guy)
+
+Delivery guy marks delivered
+├── orders table (update status to delivered)
+├── users table (set delivery is_free = 1)
+├── payments table (if cash → mark completed)
+├── users table (if commission → add to balance)
+└── notifications table (tell the customer)
+
+Customer cancels order
+├── cancellations table (record who/why/when)
+└── orders table (update status to cancelled)
+```
+
+Every table gets used. None of them are wasted. Build them in this order and your system will come together feature by feature.
