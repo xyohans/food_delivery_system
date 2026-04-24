@@ -1,0 +1,72 @@
+src/main/java/
+│
+├── db/
+│   └── DBConnection.java
+│
+├── model/
+│   ├── User.java
+│   ├── Order.java
+│   ├── OrderItem.java
+│   ├── MenuItem.java
+│   ├── MenuCategory.java
+│   ├── Payment.java
+│   └── Notification.java
+│
+├── dao/
+│   ├── UserDAO.java
+│   ├── OrderDAO.java
+│   ├── MenuDAO.java
+│   ├── PaymentDAO.java
+│   └── NotificationDAO.java
+│
+├── servlet/
+│   │
+│   ├── auth/
+│   │   ├── LoginServlet.java
+│   │   ├── RegisterServlet.java
+│   │   └── LogoutServlet.java
+│   │
+│   ├── customer/
+│   │   ├── MenuServlet.java          ← browse menu
+│   │   ├── PlaceOrderServlet.java    ← place an order
+│   │   ├── MyOrdersServlet.java      ← see my orders
+│   │   └── PaymentServlet.java       ← pay for order
+│   │
+│   ├── admin/
+│   │   ├── AdminOrdersServlet.java   ← see all orders
+│   │   ├── AssignChefServlet.java    ← assign chef
+│   │   ├── AssignDeliveryServlet.java← assign delivery
+│   │   └── ManageMenuServlet.java    ← add/edit menu items
+│   │
+│   ├── chef/
+│   │   └── ChefOrdersServlet.java    ← see assigned orders, mark ready
+│   │
+│   └── delivery/
+│       └── DeliveryServlet.java      ← see assigned deliveries, mark delivered
+│
+└── filter/
+    ├── AuthFilter.java               ← blocks if not logged in
+    └── RoleFilter.java               ← blocks wrong role
+
+src/main/webapp/
+│
+└── WEB-INF/
+    └── views/
+        ├── auth/
+        │   ├── login.jsp
+        │   └── register.jsp
+        │
+        ├── customer/
+        │   ├── menu.jsp
+        │   ├── orders.jsp
+        │   └── payment.jsp
+        │
+        ├── admin/
+        │   ├── orders.jsp
+        │   └── menu.jsp
+        │
+        ├── chef/
+        │   └── orders.jsp
+        │
+        └── delivery/
+            └── deliveries.jsp_

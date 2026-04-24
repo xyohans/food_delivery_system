@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    </head>
+    <body>
+        <div class="menus">hello customers</div>
+        <button type="button" onclick="fetchMenus()">click me</button>
+        <script>
+            const menus = document.querySelector('.menus');
+            
+            async function fetchMenus(){
+                
+                try{
+                    const res = await fetch('http://localhost:8084/food_delivery/MenuServlet');
+                    const data = await res.json();
+                    
+                    console.log(data);
+//                    menus.textContent = JSON.stringify(data , null , 2);
+                }
+                catch(err){
+                    console.log(err);
+                }
+                
+            }
+            
+        </script>
+    </body>
+</html>
