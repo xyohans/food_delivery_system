@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account — FoodDash</title>
+    <link rel="stylesheet" href="menuStyle.css">
+    <style>
+        .container { max-width: 600px; margin: 30px auto; padding: 0 20px; }
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+        .card h3 { margin-top: 0; color: #2f3542; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .card input {
+            width: 100%; padding: 12px; margin: 8px 0;
+            border: 2px solid #eee; border-radius: 8px; font-size: 1rem;
+            box-sizing: border-box;
+        }
+        .card input:focus { outline: none; border-color: #ff4757; }
+        .btn { padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .btn-primary { background: #ff4757; color: white; width: 100%; margin-top: 10px; }
+        .btn-danger  { background: #e74c3c; color: white; width: 100%; }
+        .balance-display { font-size: 1.5rem; color: #27ae60; font-weight: bold; padding: 10px 0; }
+    </style>
+</head>
+<body>
+    <nav class="customer-nav">
+        <div class="nav-logo">FoodDash</div>
+        <div class="nav-links">
+            <a href="menu.html">Menu</a>
+            <a href="checkOut.html">Cart</a>
+            <a href="myOrder.html">My Orders</a>   
+            <a href="account.html">Account</a>
+            <span id="nav-balance">Balance: $0.00</span>
+            <button onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card">
+            <h3>💰 My Wallet</h3>
+            <p class="balance-display" id="balance-display">Loading...</p>
+        </div>
+
+        <div class="card">
+            <h3>👤 My Profile</h3>
+            <input type="text" id="acc-name"  placeholder="Full Name">
+            <input type="text" id="acc-phone" placeholder="Phone Number">
+            <button class="btn btn-primary" onclick="updateAccount()">Update Profile</button>
+        </div>
+
+        <div class="card">
+            <h3>⚠️ Danger Zone</h3>
+            <p style="color:#888;margin-bottom:15px">Deleting your account cannot be undone.</p>
+            <button class="btn btn-danger" onclick="deleteAccount()">Delete My Account</button>
+        </div>
+    </div>
+
+    <script src="account.js"></script>
+</body>
+</html>

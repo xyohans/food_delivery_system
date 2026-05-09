@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>My Orders — FoodDash</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="menuStyle.css">
+    <link rel="stylesheet" href="myOrdersStyle.css">
+</head>
+<body>
+    <nav class="customer-nav">
+        <div class="nav-logo">FoodDash</div>
+        <div class="nav-links">
+            <a href="menu.html">Menu</a>
+            <a href="checkOut.html">Cart</a>
+            <a href="myOrder.html" class="active">My Orders</a>
+            <a href="account.html">Account</a>
+            <span id="nav-balance">Balance: $0.00</span>
+            <button onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container" style="padding:20px">
+        <h2>📦 Active Orders</h2>
+        <div id="orders-list" class="orders-grid">
+            <!-- JavaScript loads orders here -->
+        </div>
+    </div>
+
+    <script src="myorder.js"></script>
+</body>
+</html>

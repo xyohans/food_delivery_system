@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodDash — Login</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #2f3542 0%, #ff4757 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 420px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .logo { text-align: center; margin-bottom: 30px; }
+        .logo h1 { color: #ff4757; font-size: 2rem; }
+        .logo p  { color: #888; font-size: 0.9rem; }
+        .tabs { display: flex; border-bottom: 2px solid #eee; margin-bottom: 25px; }
+        .tab {
+            flex: 1; padding: 12px; text-align: center;
+            cursor: pointer; font-weight: bold; color: #888;
+            transition: 0.2s;
+        }
+        .tab.active { color: #ff4757; border-bottom: 2px solid #ff4757; margin-bottom: -2px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; color: #555; font-size: 0.9rem; }
+        input {
+            width: 100%; padding: 12px 15px;
+            border: 2px solid #eee; border-radius: 10px;
+            font-size: 1rem; transition: 0.2s;
+        }
+        input:focus { outline: none; border-color: #ff4757; }
+        .btn {
+            width: 100%; padding: 14px;
+            background: #ff4757; color: white;
+            border: none; border-radius: 10px;
+            font-size: 1rem; font-weight: bold;
+            cursor: pointer; margin-top: 10px;
+            transition: 0.2s;
+        }
+        .btn:hover { background: #e8373e; transform: translateY(-1px); }
+        .error {
+            background: #ffe0e3; color: #c0392b;
+            padding: 10px 15px; border-radius: 8px;
+            margin-bottom: 15px; font-size: 0.9rem;
+        }
+        .success {
+            background: #e0ffe8; color: #27ae60;
+            padding: 10px 15px; border-radius: 8px;
+            margin-bottom: 15px; font-size: 0.9rem;
+        }
+        #register-form { display: none; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="logo">
+        <h1>🍔 FoodDash</h1>
+        <p>Order delicious food delivered to your door</p>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('login')">Login</div>
+        <div class="tab"       onclick="switchTab('register')">Register</div>
+    </div>
+
+    <!-- Error / Success messages -->
+    <div id="msg"></div>
+
+    <!-- LOGIN FORM -->
+    <form id="login-form" action="LoginServlet" method="post">
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" required placeholder="you@example.com">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" required placeholder="••••••••">
+        </div>
+        <button class="btn" type="submit">Login</button>
+    </form>
+
+    <!-- REGISTER FORM -->
+    <form id="register-form" onsubmit="registerUser(event)">
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="reg-name" required placeholder="John Doe">
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="reg-email" required placeholder="you@example.com">
+        </div>
+        <div class="form-group">
+            <label>Phone</label>
+            <input type="text" id="reg-phone" placeholder="+1 555 0000">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="reg-pass" required placeholder="min 6 characters" minlength="6">
+        </div>
+        <button class="btn" type="submit">Create Account</button>
+    </form>
+</div>
+
+<script>
+    // Show error from redirect query params
+    const params = new URLSearchParams(location.search);
+    const msgEl  = document.getElementById('msg');
+    if (params.get('error') === 'invalid') {
+        msgEl.innerHTML = '<div class="error">❌ Wrong email or password.</div>';
+    } else if (params.get('error') === 'missing') {
+        msgEl.innerHTML = '<div class="error">❌ Please enter email and password.</div>';
+    } else if (params.get('error') === 'server') {
+        msgEl.innerHTML = '<div class="error">❌ Server error. Please try again.</div>';
+    } else if (params.get('registered') === '1') {
+        msgEl.innerHTML = '<div class="success">✅ Account created! You can now log in.</div>';
+    }
+
+    function switchTab(tab) {
+        document.querySelectorAll('.tab').forEach((t, i) => {
+            t.classList.toggle('active', (i === 0) === (tab === 'login'));
+        });
+        document.getElementById('login-form').style.display    = tab === 'login'    ? '' : 'none';
+        document.getElementById('register-form').style.display = tab === 'register' ? 'block' : 'none';
+        msgEl.innerHTML = '';
+    }
+
+    async function registerUser(e) {
+        e.preventDefault();
+        const body = {
+            name:  document.getElementById('reg-name').value,
+            email: document.getElementById('reg-email').value,
+            phone: document.getElementById('reg-phone').value,
+            password: document.getElementById('reg-pass').value
+        };
+
+        try {
+            const res  = await fetch('RegisterServlet', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(body)
+            });
+            const data = await res.json();
+            if (data.message) {
+                switchTab('login');
+                msgEl.innerHTML = '<div class="success">✅ Account created! You can now log in.</div>';
+            } else {
+                msgEl.innerHTML = `<div class="error">❌ ${data.error}</div>`;
+            }
+        } catch (err) {
+            msgEl.innerHTML = '<div class="error">❌ Registration failed. Try again.</div>';
+        }
+    }
+</script>
+</body>
+</html>

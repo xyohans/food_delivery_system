@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Cart — FoodDash</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="menuStyle.css">
+    <link rel="stylesheet" href="checkOut.css">
+</head>
+<body>
+<nav class="customer-nav">
+    <div class="nav-logo">FoodDash</div>
+    <div class="nav-links">
+        <a href="menu.html">Menu</a>
+        <a href="myOrder.html">My Orders</a>
+        <a href="checkOut.html">Cart</a>
+        <a href="account.html">Account</a>
+        <span id="nav-balance">Balance: $0.00</span>
+        <button onclick="logout()">Logout</button>
+    </div>
+</nav>
+
+<h2>🛒 Your Cart</h2>
+
+<div id="cartContainer"></div>
+
+<div class="summary">
+    <p id="subtotal">Subtotal: $0.00</p>
+    <div>
+        <button onclick="checkoutSelected()">Checkout Selected</button>
+        <button onclick="checkoutAll()">Checkout All</button>
+    </div>
+</div>
+
+<!-- ORDER POPUP -->
+<div id="orderPopup" class="popup">
+    <div class="popup-content">
+        <span class="close-btn" onclick="closePopup()">×</span>
+        <h3>Confirm Order</h3>
+        <div id="orderItems"></div>
+        <p id="finalTotal"></p>
+        <label>Delivery Address</label>
+        <select id="addressSelect"></select>
+        <label>Payment Method</label>
+        <select id="paymentSelect">
+            <option value="cash">Cash on Delivery</option>
+            <option value="card">Card</option>
+            <option value="wallet">Wallet Balance</option>
+        </select>
+        <label>Notes (optional)</label>
+        <textarea id="notes" placeholder="Special instructions..."></textarea>
+        <button onclick="placeOrder()">Place Order</button>
+    </div>
+</div>
+
+<script src="checkOut.js"></script>
+</body>
+</html>

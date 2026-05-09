@@ -1,0 +1,78 @@
+/* deliveryStyle.css */
+:root {
+    --delivery-success: #27ae60;
+    --delivery-dark: #1e8449;
+    --bg-road: #f8f9fa;
+    --text-dark: #333333;
+    --address-bg: #e8f5e9;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-road);
+    margin: 0;
+    padding: 15px;
+}
+
+.delivery-nav {
+    border-bottom: 3px solid var(--delivery-success);
+    margin-bottom: 20px;
+    padding: 10px 0;
+}
+
+/* Large Cards for Mobile Tapping */
+.delivery-card {
+    background: white;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    background: var(--delivery-success);
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.address-section {
+    background-color: var(--address-bg);
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+    font-size: 1.1rem;
+    color: var(--delivery-dark);
+}
+
+.amount-tag {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--text-dark);
+}
+
+/* Confirm Button */
+.btn-delivered {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: var(--delivery-success);
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-delivered:active {
+    background-color: var(--delivery-dark);
+    transform: scale(0.98);
+}

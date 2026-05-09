@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Food Menu</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="menuStyle.css" rel="stylesheet"/>
+    </head>
+
+    <body>
+        <nav class="customer-nav">
+            <div class="nav-logo">FoodDash</div>
+            <div class="nav-links">
+                <a href="menu.html">Menu</a>
+                <a href="checkOut.html">Cart</a>
+                <a href="myOrder.html">My Orders</a>
+                <a href="account.html">Account</a>
+                <span id="nav-balance">Balance: $0.00</span>
+                <button onclick="logout()">Logout</button>
+            </div>
+        </nav>
+
+        <div class="page-body">
+            <div class="filter"></div>
+            <div class="main-content">
+                <p id="balance">Balance: $0.00</p>
+                <div class="menus"></div>
+            </div>
+        </div>
+
+        <!-- Order Popup -->
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn" onclick="closePopup()">×</span>
+                <p class="name"></p>
+                <label>Quantity: <input type="number" class="quantity" min="1" value="1"/></label>
+                <p class="price"></p>
+                <p id="totalPrice">Total: </p>
+                <select id="addressSelect"></select>
+                <button onclick="openAddressPopup()">Add Address</button>
+                <select id="paymentSelect">
+                    <option value="cash">Cash</option>
+                    <option value="card">Card</option>
+                    <option value="wallet">Wallet</option>
+                </select>
+                <textarea placeholder="Any special requests?"></textarea>
+                <button onclick="sendOrder()">Place Order</button>
+            </div>
+        </div>
+
+        <!-- Add Address Popup -->
+        <div id="addressPopup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn" onclick="closeAddressPopup()">×</span>
+                <h3>Add New Address</h3>
+                <input type="text" id="labelInput" placeholder="Label (Home, Work...)" />
+                <input type="text" id="addressInput" placeholder="Full Address" />
+                <label>
+                    <input type="checkbox" id="defaultCheck" />
+                    Set as default
+                </label>
+                <button onclick="submitAddress()">Save Address</button>
+            </div>
+        </div>
+
+        <!-- Success/Error Popup -->
+        <div id="successPopup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn" onclick="closeSuccessPopup()">×</span>
+                <h3>Order Status</h3>
+                <p id="successMessage"></p>
+                <button onclick="closeSuccessPopup()">OK</button>
+            </div>
+        </div>
+
+        <script src="menu.js"></script>
+    </body>
+</html>

@@ -1,0 +1,35 @@
+.orders-grid {
+    display: grid;
+    gap: 20px;
+    padding: 20px;
+}
+
+.order-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border-left: 5px solid #ff4757;
+}
+
+.status-tag {
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.status-tag.paid { background: #e3fcef; color: #27ae60; }
+.status-tag.preparing { background: #fff4e5; color: #d35400; }
+
+.btn-cancel {
+    background: #ff4757;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.msg-locked { color: #7f8c8d; font-style: italic; font-size: 0.9rem; }

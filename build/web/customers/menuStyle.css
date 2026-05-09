@@ -1,0 +1,144 @@
+:root {
+    --primary-orange: #ff4757;
+    --dark-navy: #2f3542;
+    --light-gray: #f1f2f6;
+    --white: #ffffff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    background-color: var(--light-gray);
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ── NAV ───────────────────────────────────────────────── */
+.customer-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--dark-navy);
+    color: white;
+    padding: 15px 30px;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 2000;
+    flex-shrink: 0;
+}
+.nav-links a { color: white; text-decoration: none; margin-right: 20px; }
+#nav-balance { font-weight: bold; color: #eccc68; margin-right: 20px; }
+
+/* ── PAGE BODY (sidebar + content row) ──────────────────── */
+.page-body {
+    display: flex;
+    flex: 1;
+}
+
+/* ── FILTER SIDEBAR ─────────────────────────────────────── */
+.filter {
+    width: 250px;
+    background: var(--white);
+    min-height: calc(100vh - 60px);
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    position: sticky;
+    top: 60px;          /* height of nav */
+    align-self: flex-start;
+    flex-shrink: 0;
+}
+
+.filter h3 { color: var(--dark-navy); margin-bottom: 10px; }
+
+.filter label {
+    display: block;
+    padding: 8px 0;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: 0.2s;
+}
+.filter label:hover { color: var(--primary-orange); }
+
+/* ── MAIN CONTENT ───────────────────────────────────────── */
+.main-content {
+    flex: 1;
+    padding: 10px 30px 30px;
+}
+
+#balance {
+    color: var(--dark-navy);
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* ── MENU GRID ───────────────────────────────────────────── */
+.menus {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.menus > div {
+    background: var(--white);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+.menus > div:hover { transform: translateY(-5px); }
+
+.menus p { margin: 5px 0; }
+.menus p:first-child {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--dark-navy);
+}
+.menus span {
+    color: var(--primary-orange);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+.menus button {
+    margin-top: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.menus button:nth-of-type(1) { background: var(--primary-orange); color: white; }
+.menus button:nth-of-type(2) { background: #eccc68; color: var(--dark-navy); }
+
+/* ── POPUPS ──────────────────────────────────────────────── */
+.popup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.popup-content {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 400px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.close-btn {
+    position: absolute;
+    top: 10px; right: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #888;
+}

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Admin Dashboard</title>
+        <link rel="stylesheet" href="adminStyle.css">
+    </head>
+    <body>
+        <div class="admin-container">
+            <nav class="sidebar">
+                <h2>Admin Panel</h2>
+                <ul>
+                    <li onclick="showSection('orders')">📦 Orders</li>
+                    <li onclick="showSection('menu')">🍔 Menu</li>
+                    <li onclick="showSection('staff')">👥 Staff</li>
+                </ul>
+                <button onclick="logout()">Logout</button>
+            </nav>
+
+            <main class="content">
+
+                <!-- ORDERS SECTION -->
+                <section id="orders" class="admin-section">
+                    <h3>Orders</h3>
+                    <select id="statusFilter" onchange="filterOrders()">
+                        <option value="all">All</option>
+                        <option value="pending">Pending</option>
+                        <option value="paid">Paid — Needs Chef</option>
+                        <option value="preparing">Preparing</option>
+                        <option value="ready">Ready — Needs Delivery</option>
+                        <option value="delivering">Delivering</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th><th>Customer</th><th>Total</th>
+                                <th>Address</th><th>Status</th><th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderTableBody"></tbody>
+                    </table>
+                </section>
+
+                <!-- MENU SECTION -->
+                <section id="menu" class="admin-section" style="display:none">
+                    <h3>Menu Management</h3>
+                    <div style="background:white;padding:20px;border-radius:10px;margin-bottom:20px">
+                        <h4>Add New Item</h4>
+                        <input type="text"   id="itemName"        placeholder="Name" />
+                        <input type="text"   id="itemDescription" placeholder="Description" />
+                        <input type="number" id="itemPrice"       placeholder="Price" step="0.01" />
+                        <input type="number" id="itemCategory"    placeholder="Category ID" />
+                        <button onclick="addMenuItem()">Add Item</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th><th>Category</th><th>Price</th>
+                                <th>Available</th><th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="menuTableBody"></tbody>
+                    </table>
+                </section>
+
+                <!-- STAFF SECTION -->
+                <section id="staff" class="admin-section" style="display:none">
+                    <h3>Staff Management</h3>
+
+                    <!-- Register new staff -->
+                    <div style="background:white;padding:20px;border-radius:10px;margin-bottom:25px">
+                        <h4>Register New Staff Account</h4>
+                        <div id="staffMsg"></div>
+                        <input type="text"     id="staffName"     placeholder="Full Name" /><br/>
+                        <input type="email"    id="staffEmail"    placeholder="Email" /><br/>
+                        <input type="text"     id="staffPhone"    placeholder="Phone (optional)" /><br/>
+                        <input type="password" id="staffPassword" placeholder="Password (min 6 chars)" /><br/>
+                        <select id="staffRole">
+                            <option value="">-- Select Role --</option>
+                            <option value="admin">Admin</option>
+                            <option value="chef">Chef</option>
+                            <option value="delivery">Delivery</option>
+                        </select><br/>
+                        <button onclick="registerStaff()" style="margin-top:10px">Create Account</button>
+                    </div>
+
+                    <!-- All users table -->
+                    <h4>All Users</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th><th>Name</th><th>Email</th>
+                                <th>Phone</th><th>Role</th><th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody"></tbody>
+                    </table>
+                </section>
+
+            </main>
+        </div>
+
+        <!-- Assign Modal -->
+        <div id="assignModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);justify-content:center;align-items:center">
+            <div style="background:white;padding:30px;border-radius:15px;width:400px">
+                <h3>Assign <span id="staffTypeLabel"></span> for Order #<span id="targetOrderId"></span></h3>
+                <label>Select available staff:</label>
+                <select id="staffSelect"><option value="">-- Select --</option></select>
+                <br/><br/>
+                <button onclick="submitAssignment()">Confirm</button>
+                <button onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+
+        <script src="admin.js"></script>
+    </body>
+</html>

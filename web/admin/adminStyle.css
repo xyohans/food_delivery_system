@@ -1,0 +1,155 @@
+:root {
+    --primary-orange: #ff6b00;
+    --dark-grey: #2c3e50;
+    --light-bg: #f4f7f6;
+    --white: #ffffff;
+    --border: #dddddd;
+    --success: #27ae60;
+    --danger: #e74c3c;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-bg);
+    margin: 0;
+    display: flex;
+}
+
+/* Main Layout Structure */
+.admin-container {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* Navigation Sidebar[cite: 13] */
+.sidebar {
+    width: 250px;
+    background-color: var(--dark-grey);
+    color: var(--white);
+    padding: 20px;
+    position: fixed;
+    height: 100vh;
+}
+
+.sidebar h2 {
+    text-align: center;
+    border-bottom: 1px solid #455a64;
+    padding-bottom: 15px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 30px;
+}
+
+.sidebar li {
+    padding: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.sidebar li:hover {
+    background-color: var(--primary-orange);
+}
+
+.sidebar button {
+    width: 100%;
+    margin-top: 50px;
+    padding: 10px;
+    background: var(--danger);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Content Area[cite: 13] */
+.content {
+    margin-left: 250px;
+    padding: 40px;
+    width: calc(100% - 250px);
+}
+
+.admin-section {
+    background: var(--white);
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Tables[cite: 13] */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th {
+    background-color: #f8f9fa;
+    color: var(--dark-grey);
+    text-align: left;
+    padding: 12px;
+    border-bottom: 2px solid var(--border);
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Form Controls & Buttons */
+input, select {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+}
+
+button {
+    padding: 8px 15px;
+    background-color: var(--primary-orange);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 2px;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+/* Assign Modal Styling[cite: 13] */
+#assignModal {
+    display: none; /* Hidden by default[cite: 13] */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#assignModal > div {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 10px;
+    width: 400px;
+    text-align: center;
+}
+
+#staffSelect {
+    width: 100%;
+    margin: 15px 0;
+}
